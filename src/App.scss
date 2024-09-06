@@ -1,0 +1,41 @@
+#root {
+  // /* max-width: 1600px; */
+  margin: 0 auto;
+  .app-header {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .app-container {
+    display: flex;
+    margin: 0 auto;
+  }
+
+  .logo {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-right: auto;
+    padding-right: 5px;
+  }
+
+  @media (max-width: 768px) {
+  }
+
+  .full-screen-spin {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.7); /* Slightly opaque background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it's on top */
+  }
+
+  .full-screen-spin .ant-spin {
+    pointer-events: auto; /* Enable interaction with the loader (if needed) */
+  }
+}
