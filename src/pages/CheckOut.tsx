@@ -34,7 +34,6 @@ const Checkout: React.FC = () => {
       },
     },
   );
-  console.log(options);
   return (
     <>
       {isLoading && <Loading />}

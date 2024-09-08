@@ -3,7 +3,7 @@ import RouteDetailsCard from '../components/RouteDetailCard';
 import { Card, Col, Form, Row } from 'antd';
 import TravellerDetails from '../components/TravellerDetail';
 import BookingRequest, { IinitialState } from '../utils/interface';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SubmitButton from '../components/UI/SubmitButton';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from 'react-query';
@@ -11,7 +11,9 @@ import { getProfile, saveBooking } from '../libs/fetcher';
 import dayjs from 'dayjs';
 import { User } from '../libs/apiResponseInterface';
 import Loading from '../components/UI/Loading';
+import { bookingActions } from '../store/booking';
 const ContactDetail: React.FC = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const booking = useSelector((state: IinitialState) => state.booking);
   const [form] = Form.useForm();
@@ -40,7 +42,10 @@ const ContactDetail: React.FC = () => {
     },
     {
       onSuccess: async (booking) => {
-        if (booking && booking.referenceNumber) navigate(`/checkout/${booking.referenceNumber}`);
+        if (booking && booking.referenceNumber) {
+          dispatch(bookingActions.reset());
+          navigate(`/checkout/${booking.referenceNumber}`);
+        }
       },
       onError: (error: unknown) => {
         console.log(error);

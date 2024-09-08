@@ -18,22 +18,19 @@ const CheckoutForm = () => {
       return;
     }
 
-    const result = await stripe.confirmPayment({
-      //`Elements` instance that was used to create the Payment Element
-      elements,
-      confirmParams: {
-        return_url: `http://localhost:3000/payment-success`,
-      },
-    });
-
-    if (result.error) {
-      // Show error to your customer (for example, payment details incomplete)
-      console.log(result.error.message);
-    } else {
-      // Your customer will be redirected to your `return_url`. For some payment
-      // methods like iDEAL, your customer will be redirected to an intermediate
-      // site first to authorize the payment, then redirected to the `return_url`.
-    }
+    stripe
+      .confirmPayment({
+        elements,
+        confirmParams: {
+          // Return URL where the customer should be redirected after the PaymentIntent is confirmed.
+          return_url: 'http://localhost:3000/payment-success',
+        },
+      })
+      .then(function (result) {
+        if (result.error) {
+          // Inform the customer that there was an error.
+        }
+      });
   };
 
   return (

@@ -6,10 +6,6 @@ interface Passenger {
 }
 
 const TravellerDetails: React.FC<Passenger> = ({ numberOfPassenger }) => {
-  const onChange = (key: string | string[]) => {
-    console.log(key);
-  };
-
   const travelers: CollapseProps['items'] = Array.from(
     { length: numberOfPassenger },
     (_, index) => ({
@@ -22,7 +18,7 @@ const TravellerDetails: React.FC<Passenger> = ({ numberOfPassenger }) => {
     .map((traveler) => traveler.key!)
     .filter((key): key is string => key !== undefined);
 
-  return <Collapse items={travelers} defaultActiveKey={defaultActiveKey} onChange={onChange} />;
+  return <Collapse items={travelers} defaultActiveKey={defaultActiveKey} />;
 };
 
 export default TravellerDetails;

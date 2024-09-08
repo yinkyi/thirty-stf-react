@@ -42,7 +42,6 @@ const Nav: React.FC = () => {
       onSuccess: async () => {},
     },
   );
-  console.log(auth?.accessToken);
   if (isAuthenticated && !auth?.isAuth) {
     const fetchTokens = async () => {
       // Get the ID token
