@@ -56,3 +56,8 @@ export default interface BookingRequest {
   passengers: Passenger[];
   contactDetail: ContactDetail;
 }
+
+export interface errorFormat {
+  status: number;
+  message: string[];
+}

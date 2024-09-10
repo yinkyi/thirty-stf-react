@@ -16,6 +16,13 @@ export async function getAirPort(flightType: string) {
       Authorization: `Bearer ${token}`,
     },
   });
+  if (!res.ok) {
+    // Throw an error if the status is not in the 2xx range
+    const errorData = await res.json();
+    throw new Error(errorData.message || 'Booking request failed');
+  }
+
+  // Parse the successful response
   const response = await res.json();
   return response.data;
 }
@@ -54,8 +61,17 @@ export async function saveBooking(data: BookingRequest) {
       Authorization: `Bearer ${token}`,
     },
   });
-  const response = await res.json();
-  return response.data;
+  const result = await res.json();
+  if (!res.ok) {
+    // Throw an error if the status is not in the 2xx range
+
+    throw {
+      status: res.status,
+      message: result.message, // Preserve error details
+    };
+  }
+
+  return result.data;
 }
 
 export async function getProfile() {

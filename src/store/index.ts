@@ -1,5 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { persistStore, persistReducer } from 'redux-persist';
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PERSIST,
+  PAUSE,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // Default to localStorage
 import { combineReducers } from 'redux';
 import authReducer from './auth';
@@ -23,6 +32,13 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 // Configure the Redux store
 const store = configureStore({
   reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Ignore these redux-persist actions as they might include non-serializable values
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 
 // Create a persistor instance

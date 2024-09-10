@@ -1,8 +1,8 @@
 import ContactDetailsForm from '../components/ContactDetailForm';
 import RouteDetailsCard from '../components/RouteDetailCard';
-import { Card, Col, Form, Row } from 'antd';
+import { Card, Col, Form, message, Row } from 'antd';
 import TravellerDetails from '../components/TravellerDetail';
-import BookingRequest, { IinitialState } from '../utils/interface';
+import BookingRequest, { errorFormat, IinitialState } from '../utils/interface';
 import { useDispatch, useSelector } from 'react-redux';
 import SubmitButton from '../components/UI/SubmitButton';
 import { useNavigate } from 'react-router-dom';
@@ -12,11 +12,13 @@ import dayjs from 'dayjs';
 import { User } from '../libs/apiResponseInterface';
 import Loading from '../components/UI/Loading';
 import { bookingActions } from '../store/booking';
+import { useState } from 'react';
 const ContactDetail: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const booking = useSelector((state: IinitialState) => state.booking);
   const [form] = Form.useForm();
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
   useQuery<User>(
     ['profile'],
@@ -42,13 +44,14 @@ const ContactDetail: React.FC = () => {
     },
     {
       onSuccess: async (booking) => {
+        // debugger;
         if (booking && booking.referenceNumber) {
           dispatch(bookingActions.reset());
           navigate(`/checkout/${booking.referenceNumber}`);
         }
       },
-      onError: (error: unknown) => {
-        console.log(error);
+      onError: (error: errorFormat) => {
+        if (error.status === 400) setValidationErrors(error.message);
       },
     },
   );
@@ -100,6 +103,15 @@ const ContactDetail: React.FC = () => {
     <>
       {isLoading && <Loading />}
       <Form form={form} onFinish={onFinish} layout='vertical'>
+        {validationErrors.length > 0 && (
+          <ul>
+            {validationErrors.map((error, index) => (
+              <li key={index} style={{ color: 'red' }}>
+                {error}
+              </li>
+            ))}
+          </ul>
+        )}
         <Row gutter={[8, 8]}>
           <Col span={16}>
             <Card style={{ width: '100%' }}>
