@@ -3,15 +3,21 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { IinitialState } from './utils/interface';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface RequireAuthProps {
   element: React.ReactElement;
 }
 
 const RequireAuth: React.FC<RequireAuthProps> = ({ element }) => {
+  const { loginWithRedirect } = useAuth0();
   const isAuth = useSelector((state: IinitialState) => state.auth.isAuth); // Adjust based on your state
-
-  return isAuth ? element : <Navigate to='/' />;
+  if (isAuth) {
+    return element;
+  } else {
+    loginWithRedirect();
+    return;
+  }
 };
 
 export default RequireAuth;
