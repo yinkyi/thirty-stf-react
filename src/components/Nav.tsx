@@ -30,7 +30,11 @@ const Nav: React.FC = () => {
   } = useAuth0();
 
   const handleLogout = () => {
-    logout({});
+    logout({
+      logoutParams: {
+        returnTo: `${import.meta.env.VITE_APP_DOMAIN}:${import.meta.env.VITE_APP_PORT}`,
+      },
+    });
     dispatch(authActions.logout());
   };
 
